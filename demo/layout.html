@@ -44,7 +44,7 @@
  	<div id="innerContent" jng-size="2" jng-layout="vertical">
 
 		<div id="layoutcontent" jng-size="{weight:1,priority:100}" jng-scrollable class="content">
-			<h1>Layout</h1>
+			<p class="jng-bigger"><strong>Layout</strong></p>
 			<form class="form-horizontal">
 				<fieldset>
 
@@ -91,12 +91,12 @@
 							<input name="textinput" class="input-xlarge" type="number"
 								size="4" ng-model="ui.unit.pixels">
 							<div class="btn-group">
-								<button class="btn btn-default" ng-click="ui.unit.pixels=20"
-									ng-class="{active:ui.unit.pixels==20}">Small</button>
+								<button class="btn btn-default" ng-click="ui.unit.pixels=30"
+									ng-class="{active:ui.unit.pixels==30}">Small</button>
 								<button class="btn btn-default" ng-click="ui.unit.pixels=40"
 									ng-class="{active:ui.unit.pixels==40}">Default</button>
-								<button class="btn btn-default" ng-click="ui.unit.pixels=80"
-									ng-class="{active:ui.unit.pixels==80}">Big</button>
+								<button class="btn btn-default" ng-click="ui.unit.pixels=60"
+									ng-class="{active:ui.unit.pixels==60}">Big</button>
 							</div>
 							<p class="help-block">Dynamically setup unit size</p>
 						</div>
