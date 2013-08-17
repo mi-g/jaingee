@@ -1,0 +1,163 @@
+
+
+<div id="layout" jng-size="1" jng-layout="horizontal">
+	<div id="vbar" jng-size="ui.unit" jng-layout="vertical"
+		ng-show="ui.verticalBar">
+		<div jng-unit jng-size="letterItemSize('A')">
+			<button jng-unit="button" class="btn btn-default">A</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('B')">
+			<button jng-unit="button" class="btn btn-default">B</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('C')">
+			<button jng-unit="button" class="btn btn-default">C</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('D')">
+			<button jng-unit="button" class="btn btn-default">D</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('E')">
+			<button jng-unit="button" class="btn btn-default">E</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('F')">
+			<button jng-unit="button" class="btn btn-default">F</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('G')">
+			<button jng-unit="button" class="btn btn-default">G</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('H')">
+			<button jng-unit="button" class="btn btn-default">H</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('I')">
+			<button jng-unit="button" class="btn btn-default">I</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('J')">
+			<button jng-unit="button" class="btn btn-default">J</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('K')">
+			<button jng-unit="button" class="btn btn-default">K</button>
+		</div>
+		<div jng-unit jng-size="letterItemSize('L')">
+			<button jng-unit="button" class="btn btn-default">L</button>
+		</div>
+	</div>
+ 
+ 	<div id="innerContent" jng-size="2" jng-layout="vertical">
+
+		<div id="layoutcontent" jng-size="{weight:1,priority:100}" jng-scrollable class="content">
+			<h1>Layout</h1>
+			<form class="form-horizontal">
+				<fieldset>
+
+					<div class="control-group">
+						<label class="control-label">App level</label>
+						<div class="controls">
+							<label class="checkbox"> <input
+								ng-model="ui.header" type="checkbox"> Show header
+							</label> 
+							<label class="checkbox"> <input
+								ng-model="ui.footer" type="checkbox"> Show footer
+							</label> 
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">Bars</label>
+						<div class="controls">
+							<label class="checkbox"> <input
+								ng-model="ui.horizontalBar" type="checkbox"> Show
+								horizontal bar
+							</label> <label class="checkbox"> <input
+								ng-model="ui.verticalBar" type="checkbox"> Show
+								vertical bar
+							</label>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">Panels</label>
+						<div class="controls">
+							<label class="checkbox"> <input ng-model="ui.rightPanel"
+								type="checkbox"> Show right panel
+							</label> <label class="checkbox"> <input
+								ng-model="ui.bottomPanel" type="checkbox"> Show bottom
+								panel
+							</label>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">Unit size</label>
+						<div class="controls">
+							<input name="textinput" class="input-xlarge" type="number"
+								size="4" ng-model="ui.unit.pixels">
+							<div class="btn-group">
+								<button class="btn btn-default" ng-click="ui.unit.pixels=20"
+									ng-class="{active:ui.unit.pixels==20}">Small</button>
+								<button class="btn btn-default" ng-click="ui.unit.pixels=40"
+									ng-class="{active:ui.unit.pixels==40}">Default</button>
+								<button class="btn btn-default" ng-click="ui.unit.pixels=80"
+									ng-class="{active:ui.unit.pixels==80}">Big</button>
+							</div>
+							<p class="help-block">Dynamically setup unit size</p>
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label">Animation</label>
+						<div class="controls">
+							<input class="input-xlarge" type="number" ng-model="ui.layout.anim">
+						</div>
+					</div>
+
+					
+				</fieldset>
+			</form>
+		</div>
+		
+		<div id="hbar" jng-size="ui.unit" jng-layout="horizontal"
+			ng-show="ui.horizontalBar">
+			<div jng-unit jng-size="digitItemSize(1)" id="N1">
+				<button jng-unit="button" class="btn btn-default">1</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(2)" id="N2">
+				<button jng-unit="button" class="btn btn-primary">2</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(3)" id="N3">
+				<button jng-unit="button" class="btn btn-default">3</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(4)" id="N4">
+				<button jng-unit="button" class="btn btn-primary">4</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(5)" id="N5">
+				<button jng-unit="button" class="btn btn-default">5</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(6)" id="N6">
+				<button jng-unit="button" class="btn btn-primary">6</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(7)" id="N7">
+				<button jng-unit="button" class="btn btn-default">7</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(8)" id="N8">
+				<button jng-unit="button" class="btn btn-primary">8</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(9)" id="N9">
+				<button jng-unit="button" class="btn btn-default">9</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(10)" id="N10">
+				<button jng-unit="button" class="btn btn-primary">10</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(11)" id="N11">
+				<button jng-unit="button" class="btn btn-default">11</button>
+			</div>
+			<div jng-unit jng-size="digitItemSize(12)" id="N12">
+				<button jng-unit="button" class="btn btn-primary">12</button>
+			</div>
+		</div>
+
+		<div id="bpanel" jng-size="{weight:1,min:100,max:200}"
+			ng-show="ui.bottomPanel">Bottom panel {{jngSize.width}}x{{jngSize.height}}</div>
+	</div>
+	<div id="rpanel" jng-size="{weight:1,min:100,max:200}"
+		ng-show="ui.rightPanel">Right panel {{jngSize.width}}x{{jngSize.height}}</div>
+ </div>
+

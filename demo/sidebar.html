@@ -1,0 +1,108 @@
+<div jng-sidebar="left1:left">
+	<p>Left sidebar 1</p>
+</div>
+
+<div jng-sidebar="left2:left">
+	<p>Left sidebar 2</p>
+</div>
+
+<div jng-sidebar="right1:right">
+	<p>Right sidebar 1</p>
+</div>
+
+<div jng-sidebar="right2:right">
+	<p>Right sidebar 2</p>
+</div>
+
+<div id="sidebar" jng-size="1" jng-layout="fit" jng-scrollable class="content">
+	<h1>Sidebar</h1>
+	<form class="form-horizontal">
+		<fieldset>
+
+			<div class="control-group">
+
+				<div class="controls">
+					<div class="btn-group">
+						<button class="btn btn-default" ng-click="jngSidebar.open('nav')"
+							ng-class="{}">Open nav</button>
+						<button class="btn btn-default" ng-click="jngSidebar.open('left1')"
+							ng-class="{}">Open left 1</button>
+						<button class="btn btn-default" ng-click="jngSidebar.open('left2')"
+							ng-class="{}">Open left 2</button>
+						<button class="btn btn-default"
+							ng-click="jngSidebar.open('right1')" ng-class="{}">Open
+							right 1</button>
+						<button class="btn btn-default"
+							ng-click="jngSidebar.open('right2')" ng-class="{}">Open
+							right 2</button>
+						<button class="btn btn-default" ng-click="jngSidebar.close()"
+							ng-class="{}">Close</button>
+					</div>
+				</div>
+
+			</div>
+
+		</fieldset>
+	</form>
+
+	<br/>
+	<a href="#/sidebar-list">Using a sidebar as a context menu</a>
+	<br/>
+
+	<form class="form-horizontal">
+		<fieldset>
+
+			<legend>Default sidebar params</legend>
+
+			<div class="control-group">
+				<label class="control-label">Sidebar width</label>
+				<div class="controls">
+					<input class="input-xlarge" type="number" ng-model="ui.sidebar.defaults.width">
+				</div>
+			</div>
+
+<!-- 
+			<div class="control-group">
+				<label class="control-label">Mode</label>
+				<div class="controls">
+					<label class="radio"> <input ng-model="ui.sidebar.defaults.mode"
+						value="shift" type="radio"> Shift
+					</label> <label class="radio"> <input ng-model="ui.sidebar.defaults.mode"
+						value="over" type="radio"> Over
+					</label>
+				</div>
+			</div>
+ -->
+ 
+			<div class="control-group">
+				<label class="control-label">Animation</label>
+				<div class="controls">
+					<input class="input-xlarge" type="number" ng-model="ui.sidebar.defaults.anim">
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox"> <input
+						ng-model="ui.sidebar.closeOnViewChange" type="checkbox">Close Sidebar on view load 
+					</label>
+			</div>
+
+
+			<div class="control-group">
+				<label class="control-label">Position</label>
+				<div class="controls">
+					<label class="radio"> <input ng-model="ui.sidebar.defaults.position"
+						value="left" type="radio"> Left
+					</label> <label class="radio"> <input ng-model="ui.sidebar.defaults.position"
+						value="right" type="radio"> Right
+					</label>
+				</div>
+			</div>
+
+
+		</fieldset>
+	</form>
+
+
+</div>
