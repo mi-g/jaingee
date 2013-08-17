@@ -31,6 +31,7 @@ To start writing an application, the easy way is to copy the demo application an
 It is important to understand that the demo application is built using an angular.js view: the HTML code in *index.html* is present on all 
 pages, the HTML code inside the element with the ng-view is loaded dynamically according to the URL routes defined in *app.js*.
 
+Jaingee relies on angular.js 1.2.0 and jQuery 1.10.2. The demo app also uses bootstrap 3.0.
 
 ### Layout 
 
@@ -116,14 +117,14 @@ When a menu slides open, the actual page content is shifted on the other side. T
 
 Example:
 
-  <div jng-sidebar-main>
-    <p>My main content</p>
-    <button ng-show="jngSidebar.state=='closed'" ng-click="jngSidebar.open('my-sb')">Open</button>
-    <button ng-show="jngSidebar.state!='closed'" ng-click="jngSidebar.close()">Close</button>
-  </div>
-  <div jng-sidebar="my-sb:left">
-  	My sidebar
-  </div>
+    <div jng-sidebar-main>
+        <p>My main content</p>
+        <button ng-show="jngSidebar.state=='closed'" ng-click="jngSidebar.open('my-sb')">Open</button>
+        <button ng-show="jngSidebar.state!='closed'" ng-click="jngSidebar.close()">Close</button>
+      </div>
+    <div jng-sidebar="my-sb:left">
+        My sidebar
+    </div>
 
 Note that a sidebar can be defined inside a view. In this case, when the view is unloaded, the sidebar is automatically closed.
 
