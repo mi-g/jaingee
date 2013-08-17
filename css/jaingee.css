@@ -37,3 +37,39 @@ body {
 	top: 0;
 	z-index: 1;
 }
+
+.jng-adjust-small {
+	font-size: 1em;
+}
+
+.jng-adjust-medium {
+	font-size: 1.5em;
+}
+
+.jng-adjust-big {
+	font-size: 2.5em;
+}
+
+.jng-smaller {
+	font-size: .9em;
+}
+
+.jng-bigger {
+	font-size: 1.45em;
+}
+
+.jng-adjust-medium {
+	font-size: 1.5em;
+}
+
+.jng-adjust-big {
+	font-size: 2.5em;
+}
+
+.jng-smaller {
+	font-size: .9em;
+}
+
+.jng-bigger {
+	font-size: 1.45em;
+}
