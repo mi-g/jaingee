@@ -10,7 +10,8 @@
  */
 
 angular.module('com.jocly.jaingee.demo', [ 'ngRoute', 'ngAnimate', 
-                                           'com.jocly.jaingee.layout', 'com.jocly.jaingee.unit', 'com.jocly.jaingee.sidebar']).config(
+                                           'com.jocly.jaingee.layout', 'com.jocly.jaingee.unit', 'com.jocly.jaingee.sidebar',
+                                           'com.jocly.jaingee.adjust']).config(
 		[ '$routeProvider', '$locationProvider',
 				function($routeProvider, $locationProvider, ngRoute) {
 					$routeProvider.when('/about', {
@@ -36,9 +37,9 @@ angular.module('com.jocly.jaingee.demo', [ 'ngRoute', 'ngAnimate',
 		} ]);
 
 angular.module('com.jocly.jaingee.demo').controller('jngDemo',
-		[ '$rootScope', '$scope', 'jngLayout', 'jngUnit', 'jngSidebar',
+		[ '$rootScope', '$scope', 'jngLayout', 'jngUnit', 'jngSidebar', 'jngAdjust',
 
-		function($rootScope,$scope,jngLayout,jngUnit,jngSidebar) {
+		function($rootScope,$scope,jngLayout,jngUnit,jngSidebar,jngAdjust) {
 			// define ui object as a convenience at rootScope level
 			$rootScope.ui={
 				unit: $rootScope.jngUnit.unit,  // shortcut to unit service
