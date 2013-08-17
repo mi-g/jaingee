@@ -1,0 +1,18 @@
+<div jng-sidebar="item-menu:right">
+	<h2>{{items.all[items.index]}}</h2>
+	<div><button class="btn btn-default" 
+		ng-click="items.all.splice(items.index,1);items.index=-1;ui.sidebar.close()">Delete</button></div>
+	<div><button class="btn btn-default" 
+		ng-click="items.all.push('Copy of '+items.all[items.index]);items.index=items.all.length-1">Copy</button></div>
+	<div><button class="btn btn-default"
+		ng-click="items.all[items.index]=items.rename('Name',items.all[items.index]);ui.sidebar.close()">Rename</button></div>
+</div>
+
+<div id="items" jng-size="1" jng-scrollable class="content">
+	<ul>
+		<li ng-repeat="item in items.all" 
+			ng-click="items.index=$index; ui.sidebar.open('item-menu')"
+			ng-class="{selected:$index==items.index,right:ui.sidebar.current=='item-menu'}"
+			>{{item}}</li>
+	</ul>
+</div>

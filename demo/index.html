@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="com.jocly.jaingee.demo">
+	<head>
+		<title>Jaingee Demo</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+		<link type="text/css" rel="stylesheet" media="all" href="../lib/bootstrap3/css/bootstrap.min.css" />
+		<link type="text/css" rel="stylesheet" media="all" href="../css/jaingee.css" />
+		<link type="text/css" rel="stylesheet" media="all" href="style.css" />
+		<script src="../lib/angular.min.js"></script>
+		<script src="../lib/angular-route.min.js"></script>
+		<script src="../lib/angular-animate.min.js"></script>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/bootstrap3/js/bootstrap.min.js"></script>
+		<script src="../js/jaingee.layout.js"></script>
+		<script src="../js/jaingee.unit.js"></script>
+		<script src="../js/jaingee.sidebar.js"></script>
+		<script src="app.js"></script>
+	</head>
+	<body>
+		<div id="nav" jng-sidebar="{name:'nav'}" class="">
+			<ul class="">
+				<li ng-repeat="link in ui.nav"><a ng-href="{{link.l}}">{{link.t}}</a></li>
+			</ul>
+		</div>
+		<div id="main" jng-layout="vertical" jng-sidebar-main ng-controller="jngDemo">
+			<div id="header" jng-size="ui.unit" jng-layout="horizontal" ng-show="ui.header">
+				<div jng-unit jng-size="ui.unit" ng-show="ui.sidebar.state=='left'"><button ng-click="ui.sidebar.close()" jng-unit="button" class="btn btn-primary">&#9668;</button></div>
+				<div jng-unit jng-size="ui.unit" ng-show="ui.sidebar.current!='nav'"><a type="button" ng-click="ui.sidebar.open('nav')" jng-unit="button" class="btn btn-primary">@</a></div>
+				<div jng-unit jng-size="1">Jaingee Demo</div>
+				<div jng-unit jng-size="ui.unit" ng-show="ui.sidebar.state=='right'"><button ng-click="ui.sidebar.close()" jng-unit="button" class="btn btn-primary">&#9658;</button></div>
+			</div>
+			<div id="view" jng-size="1" ng-view class="view-anim" jng-layout="vertical"></div>
+			<div id="footer" class="jng-unit" jng-size="ui.unit" jng-layout="horizontal" ng-show="ui.footer">
+				<div jng-unit jng-size="1"></div>
+				<div jng-unit jng-size="ui.unit">
+				<div class="btn-group dropup">
+					<button jng-unit="button" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+						&nbsp;<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu pull-right">
+						<li ng-repeat="link in ui.nav"><a ng-href="{{link.l}}">{{link.t}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

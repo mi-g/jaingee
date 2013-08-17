@@ -1,0 +1,194 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+ * @author mig <michel.gutierrez@gmail.com>
+ * @version 0.1
+ * @module jaingee  
+ * @overview Javascript UI/Layout application framework. 
+ */
+
+(function($) {
+	
+	'use strict';
+	
+	angular.module('com.jocly.jaingee.sidebar', ['com.jocly.jaingee.layout'])
+	
+	/**
+	 * jngSidebar service
+	 */
+	.service('jngSidebar', [ '$rootScope', 'jngLayout', function($rootScope, jngLayout) {
+
+		$rootScope.jngSidebar={
+			state: "closed",	// sidebar overall state: 'closed', 'left'/'right' (a sidebar is open on the left/right)
+			current: null,		// currently opened sidebar name, null if none
+			shift: 0,			// the current pixel shift for the main content
+			anim: 0,			// the current sidebar slide duration
+			closeOnViewChange: true, // when ng-view content changed, setup whether any open sidebar should be closed
+			defaults: {				// defaults for defined sidebars
+				position: "left",	// left/right default position
+				anim: 500,			// default slide duration
+				mode: "shift",		// default slide mode (currently only shift is reliable)
+				width: 200,			// sidebar width
+			},
+			open: function(sbName) {	// request sidebar opening (if another sidebar is open it will be closed automatically)
+				$rootScope.jngSidebar.current=sbName;
+			},							// close any sidebar that may be opened
+			close: function() {
+				$rootScope.jngSidebar.state="closed";
+				$rootScope.jngSidebar.current=null;
+			},
+		};
+
+		$rootScope.$on("$viewContentLoaded",function() {
+			if($rootScope.jngSidebar.closeOnViewChange)
+				$rootScope.jngSidebar.close();
+		});
+
+	}])
+
+	/**
+	 * jngSidebar directive
+	 */
+	.directive('jngSidebar', 
+			[ '$rootScope','jngLayout', 'jngSidebar', function factory($rootScope,jngLayout,jngSidebar) {
+		return {
+			//scope: true,
+			link: function(scope,element,attrs) {
+				
+				var state="closed";
+				
+				/**
+				 * Evaluate sidebar description: either <name>:<left|right> or evaluated expression (see jngSidebar.defaults for details)
+				 */
+				function GetSidebarDescr() {
+					var descr;
+					var m=/^(.*):(left|right)$/.exec(attrs.jngSidebar);
+					if(m)
+						descr={
+							name: m[1],
+							position: m[2],
+						}
+					else
+						descr=scope.$eval(attrs.jngSidebar);
+					return angular.extend({},$rootScope.jngSidebar.defaults,descr);
+				}
+
+				/**
+				 * Open the sidebar.
+				 */
+				function Open() {
+					var descr=GetSidebarDescr();
+					$rootScope.jngSidebar.state=descr.position;
+					$rootScope.jngSidebar.shift=descr.width*(descr.position=='right'?-1:1);
+					$rootScope.jngSidebar.anim=descr.anim;
+					state="opening";
+					var css0={
+						width: descr.width,
+					};
+					var css={};
+					if(descr.position=="left") {
+						if(descr.mode=="shift") {
+							css0.left=-descr.width;
+							css.left=0;
+						} else if(descr.mode=="over") {
+							/* TODO: not perfect solution */
+							css0.left=0;
+							css0.width=0;
+							css.width=descr.width;
+						}
+					} else if(descr.position=="right") {
+						var width=$rootScope.jngLayout.getWindowDimensions().w;
+						if(descr.mode=="shift") {
+							css0.left=width;
+							css.left=width-descr.width;
+						} else if(descr.mode=="over") {
+							/* TODO: over mode on right */
+							css0.left=width;
+							css.left=width-descr.width;
+						}						
+					}
+					$(element[0]).show().stop().css(css0).animate(css,descr.anim,function() {
+						state="opened";
+					});
+				}
+				
+				/**
+				 * Close the sidebar. If this sidebar is open an to be replaced by another one, param 'replaced' is true. 
+				 */
+				function Close(replaced) {
+					switch(state) {
+					case "opening":
+						$(element[0]).stop();
+					case "opened":
+						var descr=GetSidebarDescr();
+						if(!replaced) {
+							$rootScope.jngSidebar.state=null;
+							$rootScope.jngSidebar.shift=0;
+							$rootScope.jngSidebar.anim=descr.anim;
+						}
+						state="closing";
+						var css={};
+						if(descr.position=="left") {
+							css.left=-descr.width;
+						} else if(descr.position=="right") {
+							var width=$rootScope.jngLayout.getWindowDimensions().w;
+							css.left=width;
+						}
+						$(element[0]).animate(css,descr.anim,function() {
+							state="closed";
+							$(element[0]).hide();
+						});
+					}
+				}
+
+				// React to page resizing
+				jngLayout.watchWindowDimensions(function(dimension) {
+					$(element[0]).css({
+						height: dimension.h,
+					});
+					if(state=="opening" || state=="opened")
+						Open();
+		        });
+
+				// Get notified on new active sidebar
+				$rootScope.$watch('jngSidebar.current', function(dimension) {
+					var name=GetSidebarDescr().name;
+					if($rootScope.jngSidebar.current==name)
+						Open();
+					else
+						Close($rootScope.jngSidebar.current!=null);
+				});
+
+				scope.$on("$destroy",function() {
+					if(state=="opening" || state=="opened")
+						$rootScope.jngSidebar.close();
+				});
+
+				element.addClass("jng-sidebar");
+			},
+		};
+	}])
+
+	/**
+	 * jngSidebarMain directive to be used on the element that is to be shifted when sidebar opens/closes
+	 */
+	.directive('jngSidebarMain', 
+			[ '$rootScope', 'jngSidebar', function factory($rootScope,jngSidebar) {
+		return {
+			link: function(scope,element,attrs) {
+
+				element.addClass("jng-sidebar-main");
+				
+				$rootScope.$watch('jngSidebar.shift',function() {
+					$(element[0]).stop().animate({
+						left: $rootScope.jngSidebar.shift,
+					},$rootScope.jngSidebar.anim);
+				});
+				
+			},
+		};
+	}])
+	
+})(jQuery);
