@@ -38,7 +38,7 @@
 	     */
 	    function Layout() {
         	WalkDescendants(angular.element($document[0].body),function(element) {
-				element.scope().jngLayout();
+				element.scope().jngRequestLayout();
         	});	    	
 	    }
 		
@@ -389,7 +389,7 @@
 			    }
 				
 				// define delayed layout request as a scope function
-				scope.jngLayout=function() {
+				scope.jngRequestLayout=function() {
 					RequestLayout(element);
 				}
 
@@ -428,11 +428,11 @@
 				};
 				if(!/^[0-9]+(?:px)?$/.exec(attrs.jngSize))
 					scope.$watch(attrs.jngSize,function() {
-						scope.$parent.jngLayout();
+						scope.$parent.jngRequestLayout();
 					},true);
 				if(element.attr("ng-show")!==undefined)
 					scope.$watch(element.attr("ng-show"),function() {
-						scope.$parent.jngLayout();
+						scope.$parent.jngRequestLayout();
 					});
 			},
 		};
