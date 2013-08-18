@@ -209,23 +209,17 @@
 						if(m)
 							dimension.height=parseInt(m[1]);
 					}
-							
-				    // handle special case (attribute jng-fit used) for current element to match its parent's size
-				    if(element.attr("jng-fit")!==undefined || attrs.jngLayout=="fit") {
-						element.css({
-							width: element.parent()[0].clientWidth+"px",
-							height: element.parent()[0].clientHeight+"px",
-						});				    	
-				    }
-				    
-				    // if element has been defined with jng-layout attribute set to 'fit', we only need to update its size to match its parent size  
-				    if(attrs.jngLayout=="fit") {
-				    	WalkDescendants(element,function(elementBelow) {
-				    		elementBelow.scope().jngDoLayout(elementBelow);
-				    	});
-				    	return;
-				    }
-
+					
+					var padding={
+						top: parseInt(jqElement.css("padding-top")),
+						bottom: parseInt(jqElement.css("padding-bottom")),
+						left: parseInt(jqElement.css("padding-left")),
+						right: parseInt(jqElement.css("padding-right")),							
+					}
+					
+					dimension.width-=padding.left+padding.right;
+					dimension.height-=padding.top+padding.bottom;
+					
 					switch(element.css("position")) {
 					case "relative":
 					case "absolute":
@@ -349,15 +343,15 @@
 							position: "absolute",
 							boxSizing: "box-border",
 						}
-						css0[dir.pos]=child.element.css(dir.pos);
+						css0[dir.pos]=child.element.css(dir.pos)+padding[dir.pos];
 						css0[dir.size]=child.element.css(dir.size);
 						css0[dir.keep]=child.element.css(dir.keep);
-						css0[dir.anchor]=child.element.css(dir.anchor);
+						css0[dir.anchor]=child.element.css(dir.anchor)+padding[dir.anchor];
 						css0.visibility="visible";
 						css0.display="block";
-						css[dir.pos]=current+"px";
+						css[dir.pos]=(current+padding[dir.pos])+"px";
 						css[dir.keep]=dimension[dir.keep]+"px";
-						css[dir.anchor]=0;
+						css[dir.anchor]=padding[dir.anchor];
 						css.visibility="hidden";
 						var value=0;
 						if(!sd.keep) {
@@ -443,5 +437,5 @@
 			},
 		};
 	}])
-	
+		
 })(jQuery);
