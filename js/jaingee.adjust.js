@@ -81,7 +81,6 @@
         });
 		
 		$rootScope.$watch('jngAdjust.currentClass',function(newValue,oldValue) {
-			console.log("modified current class")
 			var newSpec=null;
 			for(var i=0;i<$rootScope.jngAdjust.specs.length;i++) {
 				var spec=$rootScope.jngAdjust.specs[i];

@@ -189,7 +189,7 @@
 					});
 
 					var dimension;
-					if(scope.hasOwnProperty("jngSize"))
+					if(scope.hasOwnProperty("jngSize") && scope.jngSize.width>=0)
 						dimension={
 							width: scope.jngSize.width,
 							height: scope.jngSize.height,
@@ -380,9 +380,9 @@
 
 					// perform relayout on children
 			    	WalkDescendants(element,function(elementBelow) {
-			    		//console.log("propagate to",elementBelow.attr("id"));
 			    		if(elementBelow.attr("ng-show")===undefined || scope.$eval(elementBelow.attr("ng-show")))
-			    			elementBelow.scope().jngDoLayout();
+			    			if(elementBelow.hasOwnProperty("jngDoLayout"))
+				    			elementBelow.scope().jngDoLayout();
 			    	});
 			    }
 				
@@ -427,11 +427,13 @@
 				};
 				if(!/^[0-9]+(?:px)?$/.exec(attrs.jngSize))
 					scope.$watch(attrs.jngSize,function() {
-						scope.$parent.jngRequestLayout();
+						if(scope.$parent)
+							scope.$parent.jngRequestLayout();
 					},true);
 				if(element.attr("ng-show")!==undefined)
 					scope.$watch(element.attr("ng-show"),function() {
-						scope.$parent.jngRequestLayout();
+						if(scope.$parent)
+							scope.$parent.jngRequestLayout();
 					});
 			},
 		};
