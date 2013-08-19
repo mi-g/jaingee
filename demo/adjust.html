@@ -1,0 +1,34 @@
+
+<div id="about" class="content" jng-size="1" jng-scrollable>
+	<p>Resize the screen</p>
+	<p>Screen size: {{ui.adjust.screenWidth}} x {{ui.adjust.screenHeight}} 
+	<p>Pixel ratio: {{ui.adjust.pixelRatio}}</p>
+	<p>Current class: {{ui.adjust.currentClass}}</p>
+
+	<form class="form-horizontal">
+		<fieldset>
+
+			<legend>Adjust sizing</legend>
+
+			<div class="control-group">
+
+				<div class="controls">
+					<label class="checkbox"> <input
+						ng-model="ui.adjust.autoAdjust" type="checkbox"> Auto adjust to screen size
+					</label>
+				</div>
+
+				<label class="control-label">Size</label>
+				<div class="controls">
+					<label class="radio" ng-repeat="spec in ui.adjust.specs"> <input ng-model="ui.adjust.currentClass"
+						value="{{spec.bodyClass}}" type="radio"> {{ spec.title }} 
+					</label>
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+
+
+
+</div>
