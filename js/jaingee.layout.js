@@ -363,6 +363,8 @@
 						}
 
 						var jngSize=child.element.scope().jngSize;
+						if(jngSize===undefined)
+							child.element.scope().jngSize={}
 						jngSize[dir.size]=value;
 						jngSize[dir.keep]=dimension[dir.keep];
 						jngSize.visible=sd.keep;
@@ -417,6 +419,7 @@
 			[ function factory() {
 		return {
 			scope: true,
+			priority: 10,
 			link: function(scope,element,attrs) {
 				scope.jngSize={
 					width: -1,
