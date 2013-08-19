@@ -1,7 +1,7 @@
 #main {
 	width: 100%;
 	height: 100%;
-	background-color: #fee;
+	background-color: #fff;
 }
 
 #view {
@@ -10,34 +10,49 @@
 }
 
 #header {
-	background-color: #eef;
+	background-color: #333;
 	text-align: center;
+	color: white;
 }
 
 #footer {
-	background-color: #eef;
+	background-color: #333;
 }
 
 #vbar {
-	background-color: #efe;
+	background-color: #ddd;
+	-moz-box-shadow: inset -3px 0px 3px #888;
+	-webkit-box-shadow: inset -3px 0px 3px #888;
+	box-shadow: inset -3px 0px 3px #888;
 }
 
 #hbar {
-	background-color: #aaa;
+	background-color: #ddd;
+	-moz-box-shadow: inset 0px 3px 3px #888;
+	-webkit-box-shadow: inset 0px 3px 3px #888;
+	box-shadow: inset 0px 3px 3px #888;
 }
 
 #rpanel {
-	background-color: #8f8;
 	text-align: center;
 	padding-top: 20px;
+	background-color: #ddd;
+	-moz-box-shadow: inset 3px 0px 3px #888;
+	-webkit-box-shadow: inset 3px 0px 3px #888;
+	box-shadow: inset 3px 0px 3px #888;
 }
 
 #bpanel {
-	background-color: #88f;
 	text-align: center;
 	padding-top: 20px;
+	background-color: #ddd;
+	-moz-box-shadow: inset 0px 3px 3px #888;
+	-webkit-box-shadow: inset 0px 3px 3px #888;
+	box-shadow: inset 0px 3px 3px #888;
 }
-
+#view li {
+	list-style-type: none;
+}
 #items {
 	font-size: 24pt;
 }
@@ -59,8 +74,50 @@
 .content {
 	padding: 8px;
 }
+ /*   .view-anim.ng-enter,
+    .view-anim.ng-leave
+    {
+    -webkit-transition: 1000ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 100ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 1000ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 1000ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    position: relative;
+    display: block;
+    }
+     
+    .view-anim.ng-enter.view-anim.ng-enter-active,
+    .view-anim.ng-leave {
+    opacity: 1;
+    top: 0;
+    height: 30px;
+    }
+     
+    .view-anim.ng-leave.view-anim.ng-leave-active,
+    .view-anim.ng-enter {
+    opacity: 0;
+    top: -20px;
+    height: 0px;
+    }*/
+    
+.view-anim.ng-enter,
+.view-anim.ng-leave {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+}
 
-.view-anim.ng-enter,.view-anim.ng-leave {
+.view-anim.ng-enter,
+.view-anim.ng-leave.ng-leave-active {
+  opacity:0;
+}
+.view-anim.ng-leave,
+.view-anim.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+/*.view-anim.ng-enter,.view-anim.ng-leave {
 	-webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
 	-moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
 	-ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
@@ -76,7 +133,7 @@
 	-ms-transform: rotateX(90deg) rotateZ(90deg);
 	-o-transform: rotateX(90deg) rotateZ(90deg);
 	transform: rotateX(90deg) rotateZ(90deg);
-	opacity: 0;
+	opacity: 1;
 	height: 0px;
 }
 
@@ -88,5 +145,5 @@
 	transform: rotateX(0deg) rotateZ(0deg);
 	opacity: 1;
 	height: 30px;
-}
+}*/
 
