@@ -61,6 +61,8 @@
         this.watchWindowDimensions(function () {
         	Layout();
         });
+        
+        this.layout=Layout;
 		
 		$rootScope.$on("$viewContentLoaded",function() {
 			Layout();
@@ -165,9 +167,9 @@
 			    			var fit2=(child2.sizeDesc.pixels!==undefined && child2.sizeDesc.pixels<=elementSize) ||
 		    					(child2.sizeDesc.pixels===undefined && child2.sizeDesc.min<=elementSize);
 			    			if(fit1 && !fit2)
-			    				return -1;
-			    			else if(fit2 && !fit1)
 			    				return 1;
+			    			else if(fit2 && !fit1)
+			    				return -1;
 			    			else
 			    				return child1.sizeDesc.priority-child2.sizeDesc.priority;
 			    		});
@@ -177,11 +179,6 @@
 				    // collect children to be resized/moved
 					angular.forEach(element.children(), function(child) {
 						var $child=angular.element(child);
-						/*
-			    		if($child.attr("ng-show")!==undefined && !scope.$eval($child.attr("ng-show"))) {
-			    			return;
-			    		}
-			    		*/
 						var size=$child.attr("jng-size");
 						if(size) {
 							children.push({
