@@ -25,11 +25,13 @@
 			current: null,		// currently opened sidebar name, null if none
 			shift: 0,			// the current pixel shift for the main content
 			anim: 0,			// the current sidebar slide duration
+			mode: null,			// the current sidebar opening mode
+			position: null,		// the current sidebar position
 			closeOnViewChange: true, // when ng-view content changed, setup whether any open sidebar should be closed
 			defaults: {				// defaults for defined sidebars
 				position: "left",	// left/right default position
 				anim: 500,			// default slide duration
-				mode: "shift",		// default slide mode (currently only shift is reliable)
+				mode: "resize",		// default slide mode (currently only shift and resize are reliable)
 				width: 200,			// sidebar width
 			},
 			open: function(sbName) {	// request sidebar opening (if another sidebar is open it will be closed automatically)
@@ -83,13 +85,15 @@
 					$rootScope.jngSidebar.state=descr.position;
 					$rootScope.jngSidebar.shift=descr.width*(descr.position=='right'?-1:1);
 					$rootScope.jngSidebar.anim=descr.anim;
+					$rootScope.jngSidebar.mode=descr.mode;
+					$rootScope.jngSidebar.position=descr.position;
 					state="opening";
 					var css0={
 						width: descr.width,
 					};
 					var css={};
 					if(descr.position=="left") {
-						if(descr.mode=="shift") {
+						if(descr.mode=="shift" || descr.mode=="resize") {
 							css0.left=-descr.width;
 							css.left=0;
 						} else if(descr.mode=="over") {
@@ -100,7 +104,7 @@
 						}
 					} else if(descr.position=="right") {
 						var width=$rootScope.jngLayout.getWindowDimensions().w;
-						if(descr.mode=="shift") {
+						if(descr.mode=="shift" || descr.mode=="resize") {
 							css0.left=width;
 							css.left=width-descr.width;
 						} else if(descr.mode=="over") {
@@ -175,18 +179,44 @@
 	 * jngSidebarMain directive to be used on the element that is to be shifted when sidebar opens/closes
 	 */
 	.directive('jngSidebarMain', 
-			[ '$rootScope', 'jngSidebar', function factory($rootScope,jngSidebar) {
+			[ '$rootScope', 'jngLayout', 'jngSidebar', function factory($rootScope,jngLayout,jngSidebar) {
 		return {
 			link: function(scope,element,attrs) {
 
+				function UpdateSize(animate) {
+					var jqElement=$(element[0]);
+					var css0={
+							left: jqElement.css("left"),
+							width: jqElement.css("width"),
+					}
+					var css={
+						left: $rootScope.jngSidebar.shift,
+						width: $rootScope.jngLayout.getWindowDimensions().w,
+					}
+					if($rootScope.jngSidebar.mode=="resize") {
+						css.width=$rootScope.jngLayout.getWindowDimensions().w-Math.abs($rootScope.jngSidebar.shift);
+						if($rootScope.jngSidebar.position=="right")
+							css.left=0;
+					}
+					jqElement.css(css);
+					if(animate) {
+						if(typeof scope.jngDoLayout=="function")
+							scope.jngDoLayout();
+						jqElement.css(css0);
+						jqElement.stop().animate(css,$rootScope.jngSidebar.anim);
+					}
+				}
+				
 				element.addClass("jng-sidebar-main");
 				
 				$rootScope.$watch('jngSidebar.shift',function() {
-					$(element[0]).stop().animate({
-						left: $rootScope.jngSidebar.shift,
-					},$rootScope.jngSidebar.anim);
+					UpdateSize(true);
 				});
 				
+				// React to page resizing
+				jngLayout.watchWindowDimensions(function(dimension) {
+					UpdateSize(false);
+		        });
 			},
 		};
 	}])
