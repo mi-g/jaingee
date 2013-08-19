@@ -361,15 +361,14 @@
 							spare-=value;
 							totalWeight-=sd.weight;
 						}
-
-						var jngSize=child.element.scope().jngSize;
-						if(jngSize===undefined)
-							child.element.scope().jngSize={}
-						jngSize[dir.size]=value;
-						jngSize[dir.keep]=dimension[dir.keep];
-						jngSize.visible=sd.keep;
-						
 						css[dir.size]=value+"px";
+						
+						if(child.element.scope().hasOwnProperty("jngSize")) { 
+							var jngSize=child.element.scope().jngSize;
+							jngSize[dir.size]=value;
+							jngSize[dir.keep]=dimension[dir.keep];
+							jngSize.visible=sd.keep;
+						}
 
 						//console.log("to",child.element.attr("id"),css);
 
