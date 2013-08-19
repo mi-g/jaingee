@@ -24,6 +24,10 @@ body {
     overflow: auto;	
 }
 
+.jng-nowrap {
+	white-space:nowrap;
+}
+
 .jng-sidebar {
 	position: fixed;
 	top: 0;
@@ -48,6 +52,10 @@ body {
 
 .jng-adjust-big {
 	font-size: 2.5em;
+}
+
+.jng-adjust-huge {
+	font-size: 3.5em;
 }
 
 .jng-smaller {
@@ -81,4 +89,9 @@ body {
 .jng-adjust-big legend {
 	font-size: 1.4em;
 }
+
+.jng-adjust-huge input[type="radio"], .jng-adjust-big input[type="checkbox"] {
+	margin-top: 16px;
+}
+
 
