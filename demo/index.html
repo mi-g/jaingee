@@ -28,7 +28,7 @@
 			<div id="header" jng-size="ui.unit" jng-layout="horizontal" ng-show="ui.header">
 				<div jng-unit jng-size="ui.unit" ng-show="ui.sidebar.state=='left'"><button ng-click="ui.sidebar.close()" jng-unit="button" class="btn btn-primary">&#9668;</button></div>
 				<div jng-unit jng-size="ui.unit" ng-show="ui.sidebar.current!='nav'"><a type="button" ng-click="ui.sidebar.open('nav')" jng-unit="button" class="btn btn-primary">@</a></div>
-				<div jng-unit jng-size="1" class="jng-bigger"><strong>Jaingee Demo</strong></div>
+				<div jng-unit jng-size="{weight:1,min:200,priority:-1}" class="jng-bigger"><strong>Jaingee Demo</strong></div>
 				<div jng-unit jng-size="ui.unit" ng-show="ui.sidebar.state=='right'"><button ng-click="ui.sidebar.close()" jng-unit="button" class="btn btn-primary">&#9658;</button></div>
 			</div>
 			<div id="view" jng-size="1" ng-view class="view-anim" jng-layout="vertical"></div>
