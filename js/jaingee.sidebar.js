@@ -18,16 +18,17 @@
 	/**
 	 * jngSidebar service
 	 */
-	.service('jngSidebar', [ '$rootScope', 'jngLayout', function($rootScope, jngLayout) {
+	.service('jngSidebar', [ '$rootScope', '$window', 'jngLayout', function($rootScope, $window, jngLayout) {
 
 		$rootScope.jngSidebar={
 			state: "closed",	// sidebar overall state: 'closed', 'left'/'right' (a sidebar is open on the left/right)
 			current: null,		// currently opened sidebar name, null if none
 			shift: 0,			// the current pixel shift for the main content
 			anim: 0,			// the current sidebar slide duration
-			mode: null,			// the current sidebar opening mode
+			mode: "auto",		// how the main content should react to a sidebar opening: shift, resize or auto
+			modeAutoThreshold: 768, // when mode is auto, the threshold to use resize or shift
 			position: null,		// the current sidebar position
-			closeOnViewChange: true, // when ng-view content changed, setup whether any open sidebar should be closed
+			closeOnViewChange: "auto", // when ng-view content changed, setup whether any open sidebar should be closed
 			defaults: {				// defaults for defined sidebars
 				position: "left",	// left/right default position
 				anim: 500,			// default slide duration
@@ -41,10 +42,22 @@
 				$rootScope.jngSidebar.state="closed";
 				$rootScope.jngSidebar.current=null;
 			},
+			widthAboveThreshold: function() {
+				var pixelRatio=1;
+				if($window.devicePixelRatio)
+					pixelRatio=$window.devicePixelRatio;
+				var width=pixelRatio=$rootScope.jngLayout.getWindowDimensions().w;
+				return width>=$rootScope.jngSidebar.modeAutoThreshold;
+			},
 		};
 
 		$rootScope.$on("$viewContentLoaded",function() {
-			if($rootScope.jngSidebar.closeOnViewChange)
+			var closeOnViewChange=$rootScope.jngSidebar.closeOnViewChange;
+			if(closeOnViewChange=="auto")
+				closeOnViewChange=!$rootScope.jngSidebar.widthAboveThreshold();
+			else
+				closeOnViewChange=(closeOnViewChange=="yes");
+			if(closeOnViewChange)
 				$rootScope.jngSidebar.close();
 		});
 
@@ -85,7 +98,6 @@
 					$rootScope.jngSidebar.state=descr.position;
 					$rootScope.jngSidebar.shift=descr.width*(descr.position=='right'?-1:1);
 					$rootScope.jngSidebar.anim=descr.anim;
-					$rootScope.jngSidebar.mode=descr.mode;
 					$rootScope.jngSidebar.position=descr.position;
 					state="opening";
 					var css0={
@@ -184,6 +196,13 @@
 			link: function(scope,element,attrs) {
 
 				function UpdateSize(animate) {
+					var mode=$rootScope.jngSidebar.mode;
+					if(mode=="auto") {
+						if($rootScope.jngSidebar.widthAboveThreshold())
+							mode="resize";
+						else
+							mode="shift";
+					}
 					var jqElement=$(element[0]);
 					var css0={
 							left: jqElement.css("left"),
@@ -193,7 +212,7 @@
 						left: $rootScope.jngSidebar.shift,
 						width: $rootScope.jngLayout.getWindowDimensions().w,
 					}
-					if($rootScope.jngSidebar.mode=="resize") {
+					if(mode=="resize") {
 						css.width=$rootScope.jngLayout.getWindowDimensions().w-Math.abs($rootScope.jngSidebar.shift);
 						if($rootScope.jngSidebar.position=="right")
 							css.left=0;
