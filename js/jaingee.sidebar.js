@@ -203,7 +203,9 @@
 						if(typeof scope.jngDoLayout=="function")
 							scope.jngDoLayout();
 						jqElement.css(css0);
-						jqElement.stop().animate(css,$rootScope.jngSidebar.anim);
+						jqElement.stop().animate(css,$rootScope.jngSidebar.anim,function() {
+							jngLayout.layout();
+						});
 					}
 				}
 				
