@@ -24,6 +24,8 @@ angular.module('com.jocly.jaingee.demo', [ 'ngRoute', 'ngAnimate',
 						templateUrl : 'sidebar-list.html',
 					}).when('/app', {
 						templateUrl : 'app.html',
+					}).when('/adjust', {
+						templateUrl : 'adjust.html',
 					}).otherwise({
 						redirectTo : function(a, b, locationSearch) {
 							console.log("redirecting");
@@ -43,6 +45,7 @@ angular.module('com.jocly.jaingee.demo').controller('jngDemo',
 			// define ui object as a convenience at rootScope level
 			$rootScope.ui={
 				unit: $rootScope.jngUnit.unit,  // shortcut to unit service
+				adjust: $rootScope.jngAdjust,  // shortcut to adjust service
 				sidebar: $rootScope.jngSidebar,	// shortcut to sidebar service
 				layout: $rootScope.jngLayout,	// shortcut to layout service
 				
@@ -55,7 +58,7 @@ angular.module('com.jocly.jaingee.demo').controller('jngDemo',
 				footer: true,
 				
 				// so we can build navigation menus dynamically
-				nav: [{l:'#/about',t:'About'},{l:'#/layout',t:'Layout'},{l:'#/sidebar',t:'Sidebar'},{l:'#/app',t:'Your app'}],
+				nav: [{l:'#/about',t:'About'},{l:'#/layout',t:'Layout'},{l:'#/sidebar',t:'Sidebar'},{l:'#/adjust',t:'Adjust'},{l:'#/app',t:'Your app'}],
 			};
 			
 			// for item context demo

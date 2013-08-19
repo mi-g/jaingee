@@ -63,13 +63,29 @@
 			</div>
 
 			<div class="control-group">
-				<label class="control-label">Mode</label>
+				<label class="control-label">Main content opening mode</label>
 				<div class="controls">
-					<label class="radio"> <input ng-model="ui.sidebar.defaults.mode"
+					<label class="radio"> <input ng-model="ui.sidebar.mode"
+						value="auto" type="radio"> Auto
+					</label><label class="radio"> <input ng-model="ui.sidebar.mode"
 						value="shift" type="radio"> Shift
-					</label> <label class="radio"> <input ng-model="ui.sidebar.defaults.mode"
+					</label> <label class="radio"> <input ng-model="ui.sidebar.mode"
 						value="resize" type="radio"> Resize
 					</label>
+				</div>
+				<label class="control-label">Close Sidebar on view load</label>
+				<div class="controls">
+					<label class="radio"> <input ng-model="ui.sidebar.closeOnViewChange"
+						value="auto" type="radio"> Auto
+					</label><label class="radio"> <input ng-model="ui.sidebar.closeOnViewChange"
+						value="yes" type="radio"> Yes
+					</label> <label class="radio"> <input ng-model="ui.sidebar.closeOnViewChange"
+						value="no" type="radio"> No
+					</label>
+				</div>
+				<label class="control-label">Auto width threshold</label>
+				<div class="controls">
+					<input class="input-xlarge" type="number" ng-model="ui.sidebar.modeAutoThreshold" ng-disabled="ui.sidebar.mode!='auto'">
 				</div>
 			</div>
  
@@ -80,14 +96,6 @@
 				</div>
 			</div>
 			
-			<div class="control-group">
-				<div class="controls">
-					<label class="checkbox"> <input
-						ng-model="ui.sidebar.closeOnViewChange" type="checkbox">Close Sidebar on view load 
-					</label>
-			</div>
-
-
 			<div class="control-group">
 				<label class="control-label">Position</label>
 				<div class="controls">
