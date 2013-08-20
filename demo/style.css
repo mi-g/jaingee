@@ -19,11 +19,14 @@
 	background-color: #333;
 }
 
-#nav , #vbar {
+.jng-sidebar-left , #nav , #vbar {
 	background-color: #ddd;
 	-moz-box-shadow: inset -3px 0px 3px #888;
 	-webkit-box-shadow: inset -3px 0px 3px #888;
 	box-shadow: inset -3px 0px 3px #888;
+}
+#nav {
+	background-color: #eee;
 }
 
 #hbar {
@@ -33,15 +36,20 @@
 	box-shadow: inset 0px 3px 3px #888;
 }
 
-#rpanel {
-	text-align: center;
-	padding-top: 20px;
+.jng-sidebar-right, #rpanel {
 	background-color: #ddd;
 	-moz-box-shadow: inset 3px 0px 3px #888;
 	-webkit-box-shadow: inset 3px 0px 3px #888;
 	box-shadow: inset 3px 0px 3px #888;
 }
-
+.jng-sidebar-right, .jng-sidebar-left, #rpanel {
+	text-align: center;
+	padding-top: 20px;
+}
+.jng-color-1 {
+	background-color: #aaa;	
+	color: #eee;
+}
 #bpanel {
 	text-align: center;
 	padding-top: 20px;
@@ -81,10 +89,10 @@
 
 .view-anim.ng-enter,
 .view-anim.ng-leave {
-  -webkit-transition:0.5s linear all;
-  -moz-transition:0.5s linear all;
-  -o-transition:0.5s linear all;
-  transition:0.5s linear all;
+  -webkit-transition:0.3s linear all;
+  -moz-transition:0.3s linear all;
+  -o-transition:0.3s linear all;
+  transition:0.3s linear all;
 }
 
 .view-anim.ng-enter,
