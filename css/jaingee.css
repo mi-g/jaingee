@@ -67,7 +67,7 @@ body {
 }
 
 .jng-adjust-small input[type="radio"], .jng-adjust-small input[type="checkbox"] {
-	line-height: 9px;
+	line-height: 0.4em;
 }
 
 .jng-adjust-small label {
@@ -83,7 +83,7 @@ body {
 }
 
 .jng-adjust-big input[type="radio"], .jng-adjust-big input[type="checkbox"] {
-	margin-top: 10px;
+	margin-top: 0.4em;
 }
 
 .jng-adjust-big legend {
@@ -91,7 +91,7 @@ body {
 }
 
 .jng-adjust-huge input[type="radio"], .jng-adjust-big input[type="checkbox"] {
-	margin-top: 16px;
+	margin-top: 0.4em;
 }
 
 
