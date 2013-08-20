@@ -99,7 +99,12 @@
 			     * Evaluate children size description 
 			     */
 				function GetSizeDesc(jngSize) {
-					var m=/^([0-9]+)$/.exec(jngSize);
+					var m=/^fit$/.exec(jngSize)
+					if(m)
+						return {
+							fit:true,
+						}
+					m=/^([0-9]+)$/.exec(jngSize);
 					if(m)
 						return {
 							weight: parseInt(m[1]),
@@ -270,7 +275,15 @@
 				    			sd.keep=false;
 				    			return;
 				    		}
-				    		if(sd.pixels!==undefined)
+							if(sd.fit) {
+								var css={
+								};
+								css[dir.keep]=dimension[dir.keep]+"px";
+								css[dir.size]='';
+								$($child[0]).css(css);
+								sd.pixels=$($child[0])[dir.size]();
+							}
+							if(sd.pixels!==undefined)
 				    			fixedSize+=sd.pixels;
 				    		else if(sd.weight!==undefined) {
 				    			totalWeight+=sd.weight;
@@ -427,6 +440,10 @@
 						width: size.width+"px", 
 						height: size.height+"px", 
 					};
+					if(size.width==0 || size.height==0)
+						css.opacity=0;
+					else
+						css.opacity=1;
 					$(element[0]).stop().animate(css,$rootScope.jngLayout.anim)
 				}
 				scope.setSize=function(newSize) {
