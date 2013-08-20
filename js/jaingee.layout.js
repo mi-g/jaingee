@@ -38,7 +38,10 @@
 	     */
 	    function Layout() {
         	WalkDescendants(angular.element($document[0].body),function(element) {
-				element.scope().jngRequestLayout();
+        		if(element.scope().hasOwnProperty("jngRequestLayout"))
+        			element.scope().jngRequestLayout();
+        		else
+        			console.log(element.attr("id"),"has no jngRequestLayout",element.scope())
         	});	    	
 	    }
 		
@@ -83,6 +86,7 @@
 	.directive('jngLayout', 
 			[ '$rootScope','$timeout','jngLayout', function factory($rootScope,$timeout,jngLayout) {
 		return {
+			priority: 10,
 			scope: true,
 	    	link: function(scope,element,attrs) {
 				var jqElement=$(element[0]);
@@ -91,7 +95,7 @@
 			    var requestLayoutDelay=10;
 			    var elementDimension;
 
-			    /**
+				/**
 			     * Evaluate children size description 
 			     */
 				function GetSizeDesc(jngSize) {
@@ -114,9 +118,7 @@
 			    function WalkDescendants(element,callback) {
 					angular.forEach(element.children(),function(child) {
 						var childElem=angular.element(child);
-						if(childElem.attr("jng-layout"))
-							callback(childElem);
-						else
+						if(callback(childElem))
 							WalkDescendants(childElem,callback);
 					});
 			    }
@@ -176,25 +178,13 @@
 			    		return children1;
 				    }
 
-				    // collect children to be resized/moved
-					angular.forEach(element.children(), function(child) {
-						var $child=angular.element(child);
-						var size=$child.attr("jng-size");
-						if(size) {
-							children.push({
-								element: $child,
-								sizeExpr: size,
-							});
-						}
-					});
-
 					var dimension;
-					if(scope.hasOwnProperty("jngSize") && scope.jngSize.width>=0)
+					if(scope.hasOwnProperty("jngSize") && scope.jngSize.width>=0) {
 						dimension={
 							width: scope.jngSize.width,
 							height: scope.jngSize.height,
 						}
-					else {
+					} else {
 						dimension={
 								width: element[0].clientWidth,
 								height: element[0].clientHeight,
@@ -249,38 +239,51 @@
 					else
 						dir=dirs[scope.$eval(attrs.jngLayout)];
 
-					// collect children elements data
+					// collect to-be-resized/moved children elements data
 			    	var totalWeight=0, 	// total defined weight
 			    		weightMin=0,	// minimum size requested by weight-based children
 			    		fixedSize=0;   	// total requested fixed size
-			    	angular.forEach(children,function(child) {
-			    		var sd=angular.extend({
-			    			priority: 0,
-			    			min: 0,
-			    			max: Infinity,
-			    			keep: true,
-			    		},GetSizeDesc(child.sizeExpr));
-			    		child.sizeDesc=sd;
-			    		if(child.element.hasClass("ng-leave")) {
-			    			sd.keep=false;
-			    			return;
-			    		}
-			    		if(child.element.attr("ng-show")!==undefined && !scope.$eval(child.element.attr("ng-show"))) {
-			    			sd.keep=false;
-			    			return;
-			    		}
-			    		if(sd.pixels!==undefined)
-			    			fixedSize+=sd.pixels;
-			    		else if(sd.weight!==undefined) {
-			    			totalWeight+=sd.weight;
-			    			weightMin+=sd.min;
-			    		} else {
-			    			console.warn("Element id",child.element.attr("id"),"has neither 'pixels' not 'weight' spec",sd);
-			    			sd.keep=false;
-			    		}
-			    	});
-			    	
+
+			    	angular.forEach(element.children(), function(child) {
+						var $child=angular.element(child);
+						if(!$child.hasClass("ng-scope"))
+							return;
+						var childScope=$child.scope();
+						if(childScope && childScope.hasOwnProperty("jngSize")) {
+							var sd=angular.extend({
+				    			priority: 0,
+				    			min: 0,
+				    			max: Infinity,
+				    			keep: true,
+				    		},GetSizeDesc(childScope.jngSizeExpr));
+							children.push({
+								element: $child,
+								sizeExpr: childScope.jngSizeExpr,
+								sizeDesc: sd,
+								size: childScope.jngSize,
+							});
+				    		if($child.hasClass("ng-leave")) {
+				    			sd.keep=false;
+				    			return;
+				    		}
+				    		if($child.attr("ng-show")!==undefined && !scope.$eval($child.attr("ng-show"))) {
+				    			sd.keep=false;
+				    			return;
+				    		}
+				    		if(sd.pixels!==undefined)
+				    			fixedSize+=sd.pixels;
+				    		else if(sd.weight!==undefined) {
+				    			totalWeight+=sd.weight;
+				    			weightMin+=sd.min;
+				    		} else {
+				    			console.warn("Element id",$child.attr("id"),"has neither 'pixels' not 'weight' spec",sd);
+				    			sd.keep=false;
+				    		}
+						}
+					});
+
 			    	var elementSize=dimension[dir.size]; // container size in the current direction (horizontal/vertical)
+
 			    	// hide children that won't fit in the container
 			    	while(fixedSize+weightMin>elementSize) {
 			    		var children1=ChildrenIndexesByPriority();
@@ -332,28 +335,14 @@
 					var current=0; // current position
 					angular.forEach(children, function(child) {
 						var sd=child.sizeDesc;
-						var css={
-							position: "absolute",
-							boxSizing: "box-border",
-						};
-						var css0={
-							position: "absolute",
-							boxSizing: "box-border",
-						}
-						css0[dir.pos]=child.element.css(dir.pos)+padding[dir.pos];
-						css0[dir.size]=child.element.css(dir.size);
-						css0[dir.keep]=child.element.css(dir.keep);
-						css0[dir.anchor]=child.element.css(dir.anchor)+padding[dir.anchor];
-						css0.visibility="visible";
-						css0.display="block";
-						css[dir.pos]=(current+padding[dir.pos])+"px";
-						css[dir.keep]=dimension[dir.keep]+"px";
-						css[dir.anchor]=padding[dir.anchor];
-						css.visibility="hidden";
+						var sv=child.size;
+						sv[dir.pos]=(current+padding[dir.pos]);
+						sv[dir.keep]=dimension[dir.keep];
+						sv[dir.anchor]=padding[dir.anchor];
+						
 						var value=0;
 						if(!sd.keep) {
 							value=0;
-							css0.display="none";
 						} else if(sd.pixels!==undefined)
 							value=sd.pixels;
 						else {
@@ -361,29 +350,25 @@
 							spare-=value;
 							totalWeight-=sd.weight;
 						}
-						css[dir.size]=value+"px";
+						sv[dir.size]=value;
 						
-						if(child.element.scope().hasOwnProperty("jngSize")) { 
-							var jngSize=child.element.scope().jngSize;
-							jngSize[dir.size]=value;
-							jngSize[dir.keep]=dimension[dir.keep];
-							jngSize.visible=sd.keep;
-						}
-
-						//console.log("to",child.element.attr("id"),css);
-
-						$(child.element[0]).css(css0);
-						$(child.element[0]).stop().animate(css,$rootScope.jngLayout.anim);								
+						child.element.scope().setSize(sv);
 
 						current+=value;
 					});
 
 					// perform relayout on children
+					scope._jngDoLayout=scope.jngDoLayout;
+					scope.jngDoLayout=function() {}
 			    	WalkDescendants(element,function(elementBelow) {
 			    		if(elementBelow.attr("ng-show")===undefined || scope.$eval(elementBelow.attr("ng-show")))
-			    			if(elementBelow.hasOwnProperty("jngDoLayout"))
+			    			if(typeof elementBelow.scope().jngDoLayout=="function") {
 				    			elementBelow.scope().jngDoLayout();
+				    			return false;
+			    			}
+			    		return true;
 			    	});
+					scope.jngDoLayout=scope._jngDoLayout;
 			    }
 				
 				// define delayed layout request as a scope function
@@ -393,8 +378,10 @@
 
 				// define immediate layout as a scope function
 				scope.jngDoLayout=function() {
-					DoLayout(element);
+						DoLayout(element);
 				}
+				
+				RequestLayout(element);
 			},
 		};
 	}])
@@ -415,24 +402,49 @@
 	 * Directive jngSize (attribute 'jng-size') to create a scope so that the element size is immediately accessible. 
 	 */
 	.directive('jngSize', 
-			[ function factory() {
+			[ '$rootScope', function factory($rootScope) {
 		return {
 			scope: true,
-			priority: 10,
+			priority: 20,
 			link: function(scope,element,attrs) {
 				scope.jngSize={
-					width: -1,
-					height: -1,
-					visible: false,
+					width: 0,
+					height: 0,
+					top: 0,
+					left: 0,
 				};
+				scope.jngSize0=angular.extend({},scope.jngSize);
+				scope.jngSizeExpr=attrs.jngSize;
+				scope.$watch('jngSize',function(newSize) {
+					scope.setCSS(newSize)
+				});
+				scope.setCSS=function(size) {
+					angular.extend(scope.jngSize0,size);
+					var css={
+						position: "absolute",
+						top: size.top+"px", 
+						left: size.left+"px", 
+						width: size.width+"px", 
+						height: size.height+"px", 
+					};
+					$(element[0]).stop().animate(css,$rootScope.jngLayout.anim)
+				}
+				scope.setSize=function(newSize) {
+					var size0=scope.jngSize0;
+					if(newSize.left!=size0.left || newSize.top!=size0.top || newSize.width!=size0.width || newSize.height!=size0.height) {
+						angular.extend(scope.jngSize,newSize);
+						scope.setCSS(scope.jngSize);
+					}
+				};
+				element.css("position","absolute");
 				if(!/^[0-9]+(?:px)?$/.exec(attrs.jngSize))
 					scope.$watch(attrs.jngSize,function() {
-						if(scope.$parent)
+						if(scope.$parent && scope.$parent.jngRequestLayout)
 							scope.$parent.jngRequestLayout();
 					},true);
 				if(element.attr("ng-show")!==undefined)
 					scope.$watch(element.attr("ng-show"),function() {
-						if(scope.$parent)
+						if(scope.$parent && scope.$parent.jngRequestLayout)
 							scope.$parent.jngRequestLayout();
 					});
 			},
