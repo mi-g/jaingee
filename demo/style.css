@@ -26,7 +26,7 @@
 	box-shadow: inset -3px 0px 3px #888;
 }
 
-#hbar {
+#nav , #hbar {
 	background-color: #ddd;
 	-moz-box-shadow: inset 0px 3px 3px #888;
 	-webkit-box-shadow: inset 0px 3px 3px #888;
@@ -54,16 +54,20 @@
 	list-style-type: none;
 }
 #items {
-	font-size: 24pt;
+	font-size: 18pt;
 }
 
 #items li {
 	height: 36px;
-	border-bottom: 1px solid #222;
+	line-height: 36px;
+	border-bottom: 1px solid #666;
+	padding-right: 10px;
+	padding-left: 10px;
+	cursor: pointer;
 }
 
 #items li.selected {
-	background-color: Blue;
+	background-color: #666;
 	color: White;
 }
 
@@ -95,4 +99,16 @@
 #nav li{
 	line-height: 1.8em;
 }
-
+#ctx-sidebar {
+	-moz-box-shadow: inset 3px 0px 3px #888;
+	-webkit-box-shadow: inset 3px 0px 3px #888;
+	box-shadow: inset 3px 0px 3px #888;
+}
+#ctx-sidebar h2 {
+	text-align: center;
+	font-size: 2rem;
+}
+#ctx-sidebar .btn {
+	margin-left: 5%;
+	width: 90%;	
+}
