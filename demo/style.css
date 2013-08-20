@@ -54,16 +54,20 @@
 	list-style-type: none;
 }
 #items {
-	font-size: 24pt;
+	font-size: 18pt;
 }
 
 #items li {
 	height: 36px;
-	border-bottom: 1px solid #222;
+	line-height: 36px;
+	border-bottom: 1px solid #666;
+	padding-right: 10px;
+	padding-left: 10px;
+	cursor: pointer;
 }
 
 #items li.selected {
-	background-color: Blue;
+	background-color: #666;
 	color: White;
 }
 
@@ -95,4 +99,11 @@
 #nav li{
 	line-height: 1.8em;
 }
-
+.jng-sidebar h2 {
+	text-align: center;
+	font-size: 2rem;
+}
+.jng-sidebar .btn {
+	margin-left: 5%;
+	width: 90%;	
+}
