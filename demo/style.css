@@ -99,11 +99,11 @@
 #nav li{
 	line-height: 1.8em;
 }
-.jng-sidebar h2 {
+#ctx-sidebar h2 {
 	text-align: center;
 	font-size: 2rem;
 }
-.jng-sidebar .btn {
+#ctx-sidebar .btn {
 	margin-left: 5%;
 	width: 90%;	
 }
