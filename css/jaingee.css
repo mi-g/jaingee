@@ -44,54 +44,32 @@ body {
 
 .jng-adjust-small {
 	font-size: 10pt;
+	line-height: 20px;
 }
 
 .jng-adjust-medium {
 	font-size: 12pt;
+	line-height: 22px;
 }
 
 .jng-adjust-big {
 	font-size: 13pt;
+	line-height: 24px;
 }
 
 .jng-adjust-huge {
 	font-size: 20pt;
+	line-height: 26px;
 }
 
 .jng-smaller {
 	font-size: .9em;
+	line-height: .9em;
 }
 
 .jng-bigger {
 	font-size: 1.45em;
-}
-
-.jng-adjust-small input[type="radio"], .jng-adjust-small input[type="checkbox"] {
-	line-height: 0.4em;
-}
-
-.jng-adjust-small label {
-	line-height: 24px;
-}
-
-.jng-adjust-small legend {
-	font-size: 1.2em;
-}
-
-.jng-adjust-medium legend {
-	font-size: 1.2em;
-}
-
-.jng-adjust-big input[type="radio"], .jng-adjust-big input[type="checkbox"] {
-	margin-top: 0.4em;
-}
-
-.jng-adjust-big legend {
-	font-size: 1.4em;
-}
-
-.jng-adjust-huge input[type="radio"], .jng-adjust-big input[type="checkbox"] {
-	margin-top: 0.4em;
+	line-height: 1.45em;
 }
 
 
