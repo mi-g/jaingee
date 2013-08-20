@@ -19,14 +19,14 @@
 	background-color: #333;
 }
 
-#vbar {
+#nav , #vbar {
 	background-color: #ddd;
 	-moz-box-shadow: inset -3px 0px 3px #888;
 	-webkit-box-shadow: inset -3px 0px 3px #888;
 	box-shadow: inset -3px 0px 3px #888;
 }
 
-#nav , #hbar {
+#hbar {
 	background-color: #ddd;
 	-moz-box-shadow: inset 0px 3px 3px #888;
 	-webkit-box-shadow: inset 0px 3px 3px #888;
