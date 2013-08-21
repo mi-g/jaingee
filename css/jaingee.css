@@ -31,7 +31,6 @@ body {
 .jng-sidebar {
 	position: fixed;
 	top: 0;
-	z-index: 0;
 	background-color: #eee;
 	display: none;
 }
@@ -39,7 +38,6 @@ body {
 .jng-sidebar-main {
 	position: fixed;
 	top: 0;
-	z-index: 1;
 }
 
 .jng-adjust-small {
