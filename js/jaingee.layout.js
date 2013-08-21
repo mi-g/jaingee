@@ -99,7 +99,12 @@
 			     * Evaluate children size description 
 			     */
 				function GetSizeDesc(jngSize) {
-					var m=/^([0-9]+)$/.exec(jngSize);
+					var m=/^fit$/.exec(jngSize)
+					if(m)
+						return {
+							fit:true,
+						}
+					m=/^([0-9]+)$/.exec(jngSize);
 					if(m)
 						return {
 							weight: parseInt(m[1]),
@@ -207,6 +212,8 @@
 					dimension.width-=padding.left+padding.right;
 					dimension.height-=padding.top+padding.bottom;
 					
+					//console.log("container size",dimension);
+					
 					switch(element.css("position")) {
 					case "relative":
 					case "absolute":
@@ -270,7 +277,15 @@
 				    			sd.keep=false;
 				    			return;
 				    		}
-				    		if(sd.pixels!==undefined)
+							if(sd.fit) {
+								var css={
+								};
+								css[dir.keep]=dimension[dir.keep]+"px";
+								css[dir.size]='';
+								$($child[0]).css(css);
+								sd.pixels=$($child[0])[dir.size]();
+							}
+							if(sd.pixels!==undefined)
 				    			fixedSize+=sd.pixels;
 				    		else if(sd.weight!==undefined) {
 				    			totalWeight+=sd.weight;
@@ -352,6 +367,8 @@
 						}
 						sv[dir.size]=value;
 						
+						//console.log("placed",child.element.attr("id"),sv);
+						
 						child.element.scope().setSize(sv);
 
 						current+=value;
@@ -361,9 +378,10 @@
 					scope._jngDoLayout=scope.jngDoLayout;
 					scope.jngDoLayout=function() {}
 			    	WalkDescendants(element,function(elementBelow) {
-			    		if(elementBelow.attr("ng-show")===undefined || scope.$eval(elementBelow.attr("ng-show")))
-			    			if(typeof elementBelow.scope().jngDoLayout=="function") {
-				    			elementBelow.scope().jngDoLayout();
+			    		if(elementBelow.attr("ng-show")===undefined || scope.$eval(elementBelow.attr("ng-show"))) {
+			    			var belowScope=elementBelow.scope();
+			    			if(belowScope && typeof belowScope.jngDoLayout=="function") {
+				    			belowScope.jngDoLayout();
 				    			return false;
 			    			}
 			    		return true;
@@ -427,7 +445,15 @@
 						width: size.width+"px", 
 						height: size.height+"px", 
 					};
-					$(element[0]).stop().animate(css,$rootScope.jngLayout.anim)
+					if(size.width==0 || size.height==0)
+						css.opacity=0;
+					else
+						css.opacity=1;
+					$(element[0]).stop().animate(css,$rootScope.jngLayout.anim,function() {
+			    		var resizedHandler=attrs.jngResized;
+			    		if(resizedHandler)
+			    			scope.$eval(resizedHandler);
+					});
 				}
 				scope.setSize=function(newSize) {
 					var size0=scope.jngSize0;
