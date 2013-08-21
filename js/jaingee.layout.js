@@ -384,6 +384,7 @@
 				    			belowScope.jngDoLayout();
 				    			return false;
 			    			}
+			    		}
 			    		return true;
 			    	});
 					scope.jngDoLayout=scope._jngDoLayout;
@@ -449,11 +450,18 @@
 						css.opacity=0;
 					else
 						css.opacity=1;
-					$(element[0]).stop().animate(css,$rootScope.jngLayout.anim,function() {
+					if(attrs.jngResizeNoAnim===undefined)
+						$(element[0]).stop().animate(css,$rootScope.jngLayout.anim,function() {
+				    		var resizedHandler=attrs.jngResized;
+				    		if(resizedHandler)
+				    			scope.$eval(resizedHandler);
+						});
+					else {
+						$(element[0]).stop().css(css);
 			    		var resizedHandler=attrs.jngResized;
 			    		if(resizedHandler)
 			    			scope.$eval(resizedHandler);
-					});
+					}
 				}
 				scope.setSize=function(newSize) {
 					var size0=scope.jngSize0;
