@@ -450,17 +450,16 @@
 						css.opacity=0;
 					else
 						css.opacity=1;
-					if(attrs.jngResizeNoAnim===undefined)
-						$(element[0]).stop().animate(css,$rootScope.jngLayout.anim,function() {
-				    		var resizedHandler=attrs.jngResized;
-				    		if(resizedHandler)
-				    			scope.$eval(resizedHandler);
-						});
-					else {
-						$(element[0]).stop().css(css);
+					function ResizeHandler() {
 			    		var resizedHandler=attrs.jngResized;
 			    		if(resizedHandler)
-			    			scope.$eval(resizedHandler);
+			    			scope.$eval(resizedHandler);						
+					}
+					if(attrs.jngResizeNoAnim===undefined)
+						$(element[0]).stop().animate(css,$rootScope.jngLayout.anim,ResizeHandler);
+					else {
+						$(element[0]).stop().css(css);
+						ResizeHandler();
 					}
 				}
 				scope.setSize=function(newSize) {
