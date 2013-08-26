@@ -26,9 +26,10 @@ angular.module('com.jocly.jaingee.demo', [ 'ngRoute', 'ngAnimate',
 						templateUrl : 'app.html',
 					}).when('/adjust', {
 						templateUrl : 'adjust.html',
+					}).when('/fit', {
+						templateUrl : 'fit.html',
 					}).otherwise({
 						redirectTo : function(a, b, locationSearch) {
-							console.log("redirecting");
 							return '/about';
 						},
 					});
