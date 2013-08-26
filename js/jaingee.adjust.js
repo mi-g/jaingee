@@ -31,12 +31,12 @@
 				title: "Huge",
 				min: 1280,
 				bodyClass: "jng-adjust-huge",
-				unit: 80,
+				unit: 40,
 			},{
 				title: "Big",
 				min: 768,
 				bodyClass: "jng-adjust-big",
-				unit: 60,
+				unit: 40,
 			},{
 				title: "Medium",
 				min: 360,
@@ -55,10 +55,11 @@
 		};
 		
 		var body=angular.element($document[0].body);
-		body.addClass($rootScope.jngAdjust.currentClass);
+		var html=angular.element($document[0].documentElement);
 		
 		function UpdateClass(spec) {
 			body.addClass(spec.bodyClass);
+			html.addClass(spec.bodyClass);
 			$rootScope.jngUnit.unit.pixels=spec.unit;
 		}
 
@@ -90,6 +91,7 @@
 				}
 			}
 			if(newSpec) {
+				html.removeClass(oldValue);
 				body.removeClass(oldValue);
 				UpdateClass(newSpec);
 			}
