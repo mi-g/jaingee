@@ -27,6 +27,8 @@
 				pixels: 40,
 			},
 		};
+		
+		this.unit=$rootScope.jngUnit.unit;
 
 		$rootScope.$watch('jngUnit.unit', function () {
         	$rootScope.jngLayout.layout();

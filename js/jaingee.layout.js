@@ -18,7 +18,7 @@
 	/**
 	 * jngLayout service
 	 */
-	.service('jngLayout', [ '$rootScope', '$window', '$document', function($rootScope, $window, $document) {
+	.service('jngLayout', [ '$rootScope', '$window', '$document', '$timeout', function($rootScope, $window, $document, $timeout) {
 		var self = this;
 
 		/**
@@ -68,7 +68,7 @@
         this.layout=Layout;
 		
 		$rootScope.$on("$viewContentLoaded",function() {
-			Layout();
+			$timeout(Layout,0);
 		});
 
         w.bind('resize', function () {
@@ -211,6 +211,8 @@
 					
 					dimension.width-=padding.left+padding.right;
 					dimension.height-=padding.top+padding.bottom;
+					
+					//console.log("container size",dimension);
 					
 					switch(element.css("position")) {
 					case "relative":
@@ -365,6 +367,8 @@
 						}
 						sv[dir.size]=value;
 						
+						//console.log("placed",child.element.attr("id"),sv);
+						
 						child.element.scope().setSize(sv);
 
 						current+=value;
@@ -374,11 +378,13 @@
 					scope._jngDoLayout=scope.jngDoLayout;
 					scope.jngDoLayout=function() {}
 			    	WalkDescendants(element,function(elementBelow) {
-			    		if(elementBelow.attr("ng-show")===undefined || scope.$eval(elementBelow.attr("ng-show")))
-			    			if(typeof elementBelow.scope().jngDoLayout=="function") {
-				    			elementBelow.scope().jngDoLayout();
+			    		if(elementBelow.attr("ng-show")===undefined || scope.$eval(elementBelow.attr("ng-show"))) {
+			    			var belowScope=elementBelow.scope();
+			    			if(belowScope && typeof belowScope.jngDoLayout=="function") {
+				    			belowScope.jngDoLayout();
 				    			return false;
 			    			}
+			    		}
 			    		return true;
 			    	});
 					scope.jngDoLayout=scope._jngDoLayout;
@@ -444,7 +450,17 @@
 						css.opacity=0;
 					else
 						css.opacity=1;
-					$(element[0]).stop().animate(css,$rootScope.jngLayout.anim)
+					function ResizeHandler() {
+			    		var resizedHandler=attrs.jngResized;
+			    		if(resizedHandler)
+			    			scope.$eval(resizedHandler);						
+					}
+					if(attrs.jngResizeNoAnim===undefined)
+						$(element[0]).stop().animate(css,$rootScope.jngLayout.anim,ResizeHandler);
+					else {
+						$(element[0]).stop().css(css);
+						ResizeHandler();
+					}
 				}
 				scope.setSize=function(newSize) {
 					var size0=scope.jngSize0;
