@@ -18,7 +18,7 @@
 	/**
 	 * jngLayout service
 	 */
-	.service('jngLayout', [ '$rootScope', '$window', '$document', function($rootScope, $window, $document) {
+	.service('jngLayout', [ '$rootScope', '$window', '$document', '$timeout', function($rootScope, $window, $document, $timeout) {
 		var self = this;
 
 		/**
@@ -68,7 +68,7 @@
         this.layout=Layout;
 		
 		$rootScope.$on("$viewContentLoaded",function() {
-			Layout();
+			$timeout(Layout,0);
 		});
 
         w.bind('resize', function () {
