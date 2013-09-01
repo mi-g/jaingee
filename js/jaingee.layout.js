@@ -251,6 +251,8 @@
 			    		weightMin=0,	// minimum size requested by weight-based children
 			    		fixedSize=0;   	// total requested fixed size
 
+			    	var childIndex=1;
+			    	
 			    	angular.forEach(element.children(), function(child) {
 						var $child=angular.element(child);
 						if(!$child.hasClass("ng-scope"))
@@ -262,6 +264,7 @@
 				    			min: 0,
 				    			max: Infinity,
 				    			keep: true,
+				    			index: childIndex++,
 				    		},GetSizeDesc(childScope.jngSizeExpr));
 							children.push({
 								element: $child,
@@ -296,6 +299,10 @@
 				    		}
 						}
 					});
+			    	
+			    	children.sort(function(c1,c2) {
+			    		return c1.sizeDesc.index-c2.sizeDesc.index;
+			    	});
 
 			    	var elementSize=dimension[dir.size]; // container size in the current direction (horizontal/vertical)
 
