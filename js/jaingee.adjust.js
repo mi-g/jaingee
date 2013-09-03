@@ -22,6 +22,8 @@
 
 		//console.log("installed jngAdjust")
 		
+		var self=this;
+		
 		var pixelRatio=1;
 		if($window.devicePixelRatio)
 			pixelRatio=$window.devicePixelRatio;
@@ -62,10 +64,12 @@
 			html.addClass(spec.bodyClass);
 			$rootScope.jngUnit.unit.pixels=spec.unit;
 		}
-
-		jngLayout.watchWindowDimensions(function (winSize) {
-			$rootScope.jngAdjust.screenWidth=winSize.w;
-			$rootScope.jngAdjust.screenHeight=winSize.h;
+		
+		self.updateSize = function() {
+			var winSize={
+				w: $rootScope.jngAdjust.screenWidth,
+				h: $rootScope.jngAdjust.screenHeight,
+			}
 			var newSpec=null;
 			var size=Math.min(winSize.w,winSize.h)*pixelRatio;
 			for(var i=0;i<$rootScope.jngAdjust.specs.length;i++) {
@@ -79,6 +83,12 @@
 			if($rootScope.jngAdjust.autoAdjust && newSpec && newSpec.bodyClass!=$rootScope.jngAdjust.currentClass) {
 				$rootScope.jngAdjust.currentClass=spec.bodyClass;
 			}
+		}
+
+		jngLayout.watchWindowDimensions(function (winSize) {
+			$rootScope.jngAdjust.screenWidth=winSize.w;
+			$rootScope.jngAdjust.screenHeight=winSize.h;
+			self.updateSize();
         });
 		
 		$rootScope.$watch('jngAdjust.currentClass',function(newValue,oldValue) {
