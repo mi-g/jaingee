@@ -22,6 +22,8 @@
 
 		//console.log("installed jngAdjust")
 		
+		var self=this;
+		
 		var pixelRatio=1;
 		if($window.devicePixelRatio)
 			pixelRatio=$window.devicePixelRatio;
@@ -47,7 +49,28 @@
 				bodyClass: "jng-adjust-small",
 				unit: 30,				
 			}],
+			wspecs: [{
+				title: "Huge",
+				min: 1280,
+				bodyClass: "jng-adjust-whuge",
+				unit: 40,
+			},{
+				title: "Big",
+				min: 768,
+				bodyClass: "jng-adjust-wbig",
+				unit: 40,
+			},{
+				title: "Medium",
+				min: 360,
+				bodyClass: "jng-adjust-wmedium",
+				unit: 40,				
+			},{
+				title: "Small",
+				bodyClass: "jng-adjust-wsmall",
+				unit: 30,				
+			}],
 			currentClass: "jng-adjust-medium",
+			currentWClass: "jng-adjust-wmedium",
 			pixelRatio: pixelRatio,
 			screenWidth: 0,
 			screenHeight: 0,
@@ -62,10 +85,17 @@
 			html.addClass(spec.bodyClass);
 			$rootScope.jngUnit.unit.pixels=spec.unit;
 		}
-
-		jngLayout.watchWindowDimensions(function (winSize) {
-			$rootScope.jngAdjust.screenWidth=winSize.w;
-			$rootScope.jngAdjust.screenHeight=winSize.h;
+		
+		function UpdateWClass(wspec) {
+			body.addClass(wspec.bodyClass);
+			html.addClass(wspec.bodyClass);
+		}
+		
+		self.updateSize = function() {
+			var winSize={
+				w: $rootScope.jngAdjust.screenWidth,
+				h: $rootScope.jngAdjust.screenHeight,
+			}
 			var newSpec=null;
 			var size=Math.min(winSize.w,winSize.h)*pixelRatio;
 			for(var i=0;i<$rootScope.jngAdjust.specs.length;i++) {
@@ -79,6 +109,25 @@
 			if($rootScope.jngAdjust.autoAdjust && newSpec && newSpec.bodyClass!=$rootScope.jngAdjust.currentClass) {
 				$rootScope.jngAdjust.currentClass=spec.bodyClass;
 			}
+			var newWSpec=null;
+			var size=winSize.w*pixelRatio;
+			for(var i=0;i<$rootScope.jngAdjust.wspecs.length;i++) {
+				var wspec=$rootScope.jngAdjust.wspecs[i];
+				if((wspec.min===undefined || size>=wspec.min) &&
+					(wspec.max===undefined || size<=wspec.max)) {
+					newWSpec=wspec;
+					break;
+				}
+			}
+			if($rootScope.jngAdjust.autoAdjust && newWSpec && newWSpec.bodyClass!=$rootScope.jngAdjust.currentWClass) {
+				$rootScope.jngAdjust.currentWClass=wspec.bodyClass;
+			}
+		}
+
+		jngLayout.watchWindowDimensions(function (winSize) {
+			$rootScope.jngAdjust.screenWidth=winSize.w;
+			$rootScope.jngAdjust.screenHeight=winSize.h;
+			self.updateSize();
         });
 		
 		$rootScope.$watch('jngAdjust.currentClass',function(newValue,oldValue) {
@@ -94,6 +143,22 @@
 				html.removeClass(oldValue);
 				body.removeClass(oldValue);
 				UpdateClass(newSpec);
+			}
+		});
+
+		$rootScope.$watch('jngAdjust.currentWClass',function(newValue,oldValue) {
+			var newWSpec=null;
+			for(var i=0;i<$rootScope.jngAdjust.wspecs.length;i++) {
+				var wspec=$rootScope.jngAdjust.wspecs[i];
+				if(wspec.bodyClass==newValue) {
+					newWSpec=wspec;
+					break;
+				}
+			}
+			if(newWSpec) {
+				html.removeClass(oldValue);
+				body.removeClass(oldValue);
+				UpdateWClass(newWSpec);
 			}
 		});
 
