@@ -104,6 +104,11 @@
 						return {
 							fit:true,
 						}
+					m=/^ignore$/.exec(jngSize);
+					if(m)
+						return {
+							ignore:true,
+						}
 					m=/^([0-9]+)$/.exec(jngSize);
 					if(m)
 						return {
@@ -266,6 +271,8 @@
 				    			keep: true,
 				    			index: childIndex++,
 				    		},GetSizeDesc(childScope.jngSizeExpr));
+							if(sd.ignore)
+								return;
 							children.push({
 								element: $child,
 								sizeExpr: childScope.jngSizeExpr,
@@ -445,6 +452,8 @@
 					scope.setCSS(newSize)
 				});
 				scope.setCSS=function(size) {
+					if(scope.jngSizeExpr=='ignore')
+						return;
 					angular.extend(scope.jngSize0,size);
 					var css={
 						position: "absolute",
