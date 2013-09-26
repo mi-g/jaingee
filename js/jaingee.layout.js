@@ -44,12 +44,15 @@
         			console.log(element.attr("id"),"has no jngRequestLayout",element.scope())
         	});	    	
 	    }
-		
-		var w = angular.element($window);
 
+	    this.rootElement=null;
+	    
 		$rootScope.jngLayout={
 	        getWindowDimensions : function () {
-	            return { 'h': $window.innerHeight, 'w': $window.innerWidth };
+	        	if(self.rootElement)
+	        		return { 'h': self.rootElement.clientHeight, 'w': self.rootElement.clientWidth };
+	        	else
+	        		return { 'h': $window.innerHeight, 'w': $window.innerWidth };
 	        },
 	        layout: Layout,
 	        anim: 400,
@@ -71,7 +74,7 @@
 			$timeout(Layout,0);
 		});
 
-        w.bind('resize', function () {
+		angular.element($window).bind('resize', function () {
         	if(!$rootScope.$$phase)
         		$rootScope.$apply();
         });
@@ -499,5 +502,19 @@
 			},
 		};
 	}])
-		
+
+	/**
+	 * Directive to specify the element containing the whole jaingee context
+	 */
+	.directive('jngRoot', 
+			[ 'jngLayout', function factory(jngLayout) {
+		return {
+			link: function(scope,element,attrs) {
+				jngLayout.rootElement=element[0];
+			},
+		};
+	}])
+
+
+	
 })(jQuery);
