@@ -286,7 +286,7 @@
 				    			sd.keep=false;
 				    			return;
 				    		}
-				    		if($child.attr("ng-show")!==undefined && !scope.$eval($child.attr("ng-show"))) {
+				    		if($child.attr("ng-show")!==undefined && !childScope.$eval($child.attr("ng-show"))) {
 				    			sd.keep=false;
 				    			return;
 				    		}
